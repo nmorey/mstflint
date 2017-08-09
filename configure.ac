@@ -296,6 +296,7 @@ AC_SEARCH_LIBS([sqlite3_initialize], [sqlite3], [SQLITE_SYSTEM_AVAILABLE="yes"],
 AM_CONDITIONAL([USE_LOCAL_SQLITE], [test "$SQLITE_SYSTEM_AVAILABLE" = no])
 
 CFLAGS="$CFLAGS -DMST_UL"
+CPPFLAGS="$CPPFLAGS -DMST_UL"
 CXXFLAGS="$CXXFLAGS -DMST_UL"
 
 AM_CFLAGS="-Wall"
@@ -313,6 +314,14 @@ AX_CHECK_COMPILE_FLAG([-Wno-format-overflow], [CFLAGS="$CFLAGS -Wno-format-overf
 AX_CHECK_COMPILE_FLAG([-Wno-implicit-fallthrough], [CFLAGS="$CFLAGS -Wno-implicit-fallthrough"], [], [])
 AX_CHECK_COMPILE_FLAG([-Wno-cast-function-type], [CFLAGS="$CFLAGS -Wno-cast-function-type"], [], [])
 CFLAGS="$OLD_CFLAGS"
+
+# C GCC [78] related ignores
+OLD_CPPFLAGS="$CPPFLAGS"
+CPPFLAGS="$CPPFLAGS -Wall -Werror"
+AX_CHECK_COMPILE_FLAG([-Wno-format-overflow], [CPPFLAGS="$CPPFLAGS -Wno-format-overflow"], [], [])
+AX_CHECK_COMPILE_FLAG([-Wno-implicit-fallthrough], [CPPFLAGS="$CPPFLAGS -Wno-implicit-fallthrough"], [], [])
+AX_CHECK_COMPILE_FLAG([-Wno-cast-function-type], [CPPFLAGS="$CPPFLAGS -Wno-cast-function-type"], [], [])
+CPPFLAGS="$OLD_CPPFLAGS"
 
 # C++ related ignores
 OLD_CXXFLAGS="$CXXFLAGS"
